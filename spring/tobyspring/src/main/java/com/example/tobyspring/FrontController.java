@@ -27,6 +27,9 @@ public class FrontController {
 
         //Servlet Container Tomcat 띄우기
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+        serverFactory.setPort(9090);
+
+
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
 //            HelloController helloController = new HelloController();
 
