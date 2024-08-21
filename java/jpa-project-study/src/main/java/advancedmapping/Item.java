@@ -1,4 +1,4 @@
-package AdvancedMapping;
+package advancedmapping;
 
 import lombok.Getter;
 import lombok.Setter;
