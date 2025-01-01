@@ -18,7 +18,7 @@ public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private long id;
-    private String username;
+    private String name;
     @Embedded
     private Address address;
     //mappedBy: 내가 연관관계의 주인이 아니라는 것을 의미
