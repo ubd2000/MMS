@@ -14,8 +14,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDB106Dialect
-        show-sql: true
+#        show-sql: true
         format_sql: true
+        default_batch_fetch_size: 100
 
 logging:
   level:
