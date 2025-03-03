@@ -14,6 +14,10 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member {
 
     @Id
@@ -29,6 +33,11 @@ public class Member {
 
     public Member(String username) {
         this.username = username;
+    }
+
+    public Member(String member, int age) {
+        this.username = member;
+        this.age = age;
     }
 
     public Member(String member, int age, Team team) {
