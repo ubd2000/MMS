@@ -1,0 +1,10 @@
+spring:
+  session:
+    # Spring Session? Redis? ????? ??
+    store-type: redis
+  data:
+    redis:
+      port: 6379
+      host: localhost
+server:
+  port: 8080
