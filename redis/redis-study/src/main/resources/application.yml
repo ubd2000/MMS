@@ -2,7 +2,7 @@ spring:
   cache:
     type: redis
   session:
-    # Spring Session? Redis? ????? ??
+    # Spring Session이 세션 저장소로 Redis를 사용하도록 지정하는 설정
     store-type: redis
   data:
     redis:
