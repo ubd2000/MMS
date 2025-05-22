@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: redis
   session:
     # Spring Session? Redis? ????? ??
     store-type: redis
