@@ -20,6 +20,8 @@ public class PubSubChatApplication implements CommandLineRunner {
 		System.out.println("PubSubChatApplication started successfully!");
 
 		chatService.enterCharRoom("chat-room-1");
+
 	}
+
 
 }
