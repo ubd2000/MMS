@@ -18,6 +18,6 @@ public @interface UseCase {
      * to be turned into a Spring bean in case of an autodetected component.
      * @return the suggested component name, if any (or empty String otherwise)
      */
-    @AliasFor(annotation = WebAdapter.class)
+    @AliasFor(annotation = Component.class)
     String value() default "";
 }
