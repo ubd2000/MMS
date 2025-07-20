@@ -1,9 +1,9 @@
 package com.depotpay.membership.adapter.in.web;
 
+import com.depotpay.common.WebAdapter;
 import com.depotpay.membership.application.port.in.RegisterMembershipCommand;
 import com.depotpay.membership.application.port.in.RegisterMembershipUserCase;
 import com.depotpay.membership.domain.Membership;
-import common.WebAdapter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

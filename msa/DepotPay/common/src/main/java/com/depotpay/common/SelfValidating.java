@@ -1,6 +1,7 @@
-package common;
+package com.depotpay.common;
 
 import jakarta.validation.*;
+
 import java.util.Set;
 
 public abstract class SelfValidating<T> {

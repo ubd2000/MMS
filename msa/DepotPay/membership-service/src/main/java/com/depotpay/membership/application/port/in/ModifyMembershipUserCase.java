@@ -7,6 +7,6 @@ import com.depotpay.membership.domain.Membership;
  * @author: DongMin Kim
  */
 @UseCase
-public interface RegisterMembershipUserCase {
-    Membership registerMembership(RegisterMembershipCommand command);
+public interface ModifyMembershipUserCase {
+    Membership modifyMembership(ModifyMembershipCommand command);
 }
