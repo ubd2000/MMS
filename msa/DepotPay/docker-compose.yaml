@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    networks:
+      - depotpay_network
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    env_file: .env
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=dosel2
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=dosel2
+
+  membership-service:
+    image: depotpay-membership-service:1.0.3
+    networks:
+      - depotpay_network
+    ports:
+      - "9000:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/depot_pay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=mysqluser
+      - SPRING_DATASOURCE_PASSWORD=dosel2
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+networks:
+  depotpay_network:
+    driver: bridge

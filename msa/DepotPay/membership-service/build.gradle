@@ -1,11 +1,9 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.5.3'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.bmuschko.docker-spring-boot-application' version '9.4.0'
 }
 
 group = 'com.depotpay.membership'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.3'
 
 java {
     toolchain {
@@ -34,10 +32,20 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j' // MySQL connector
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+docker {
+    springBootApplication {
+        baseImage = 'openjdk:17-jdk-slim' // or your preferred JDK image
+        maintainer = 'depot'
+        ports = [8080] // expose app port
+        images = ["depotpay-${project.name}:${version}"]
+    }
 }
