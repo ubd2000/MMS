@@ -22,12 +22,12 @@ public class Membership {
     // Membership
     // 오염이 되면 안되는 클래스. 고객 정보 - 핵심 도메인
 
-    public static Membership generateMember(MembershipId membershipId,
-                                            MembershipName name,
-                                            MembershipEmail email,
-                                            MembershipAddress address,
-                                            MembershipValid isValid,
-                                            MembershipCorp isCorp) {
+    public static Membership generateMember(Membership.MembershipId membershipId,
+                                            Membership.MembershipName name,
+                                            Membership.MembershipEmail email,
+                                            Membership.MembershipAddress address,
+                                            Membership.MembershipValid isValid,
+                                            Membership.MembershipCorp isCorp) {
         return new Membership(membershipId.membershipId,
                 name.name,
                 email.email,

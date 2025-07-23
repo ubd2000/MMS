@@ -21,7 +21,22 @@ services:
     networks:
       - depotpay_network
     ports:
-      - "9000:8080"
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/depot_pay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=mysqluser
+      - SPRING_DATASOURCE_PASSWORD=dosel2
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  banking-service:
+    image: depotpay-banking-service:1.0.0
+    networks:
+      - depotpay_network
+    ports:
+      - "8081:8080"
     depends_on:
       - mysql
     environment:
