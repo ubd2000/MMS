@@ -1,5 +1,6 @@
 package com.depotpay.banking.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,14 +9,24 @@ import lombok.Value;
 /**
  * @author: DongMin Kim
  */
+@Schema(description = "등록된 은행 계좌 정보")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class RegisterBankAccount {
 
+    @Schema(description = "등록된 은행 계좌 ID", example = "BANK_ACC_001")
     private final String registeredBankAccountId;
+    
+    @Schema(description = "회원 ID", example = "MEMBER001")
     private final String membershipId;
+    
+    @Schema(description = "은행명", example = "국민은행")
     private final String bankName;
+    
+    @Schema(description = "계좌번호", example = "123456-78-901234")
     private final String bankAccountNumber;
+    
+    @Schema(description = "연결 상태 유효성", example = "true")
     private final Boolean linkedStatusIsValid;
 
     public static RegisterBankAccount generateRegisteredBankAccount(
