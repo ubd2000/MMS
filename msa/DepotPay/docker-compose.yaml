@@ -29,7 +29,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=mysqluser
       - SPRING_DATASOURCE_PASSWORD=dosel2
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
 
   banking-service:
     image: depotpay-banking-service:1.0.0
@@ -44,7 +44,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=mysqluser
       - SPRING_DATASOURCE_PASSWORD=dosel2
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
 
 networks:
   depotpay_network:

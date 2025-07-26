@@ -16,14 +16,14 @@ import lombok.EqualsAndHashCode;
 public class RegisterBankAccountCommand extends SelfValidating<RegisterBankAccountCommand> {
 
     @NotNull
-    private String registeredBankAccountId;
+    private final String registeredBankAccountId;
     @NotNull
-    private String membershipId;
+    private final String membershipId;
     @NotNull
-    private String bankName;
+    private final String bankName;
     @NotNull
-    private String bankAccountNumber;
+    private final String bankAccountNumber;
     @AssertTrue
-    private Boolean linkedStatusIsValid;
+    private final Boolean linkedStatusIsValid;
 
 }

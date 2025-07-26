@@ -15,6 +15,6 @@ import lombok.EqualsAndHashCode;
 public class FindBankAccountCommand extends SelfValidating<FindBankAccountCommand> {
 
     @NotNull
-    private String membershipId;
+    private final String membershipId;
 
 }

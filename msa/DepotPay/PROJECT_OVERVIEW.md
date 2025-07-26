@@ -80,7 +80,8 @@ public class Membership {
 
 **기능:**
 - 은행 계좌 등록 (Register Bank Account) - ✅ 완전 구현
-- 은행 계좌 조회 (Find Bank Account) - ⚠️ 구조만 존재 (서비스 로직 미완성)
+- 은행 계좌 조회 (Find Bank Account) - ✅ 완전 구현
+- 실물 계좌 이체 요청 (Request Firm Banking) - ✅ 완전 구현
 - 외부 은행 시스템 연동 (Mock 구현)
 - 회원-계좌 연결 상태 관리
 
@@ -93,10 +94,17 @@ public class Membership {
 4. 등록된 계좌 정보 반환
 
 *은행 계좌 조회 프로세스:*
-- 회원 ID 기반 등록된 계좌 정보 조회 (현재 미구현 상태)
+- 회원 ID 기반 등록된 계좌 정보 조회
+
+*실물 계좌 이체 요청 프로세스:*
+1. 이체 요청 정보 검증 (출금 계좌, 입금 계좌, 금액)
+2. 외부 은행 시스템을 통한 실물 이체 실행 (`BankAccountAdapter`)
+3. 이체 요청 결과를 데이터베이스에 저장
+4. 이체 완료 정보 반환
 
 **도메인 모델:**
 ```java
+// 은행 계좌 등록
 public class RegisterBankAccount {
     private String registeredBankAccountId;  // 등록된 계좌 ID
     private String membershipId;             // 회원 ID  
@@ -111,15 +119,38 @@ public class RegisterBankAccount {
     - BankAccountNumber
     - LinkedStatusIsValid
 }
+
+// 실물 계좌 이체 요청
+public class FirmBankRequest {
+    private String firmBankRequestId;        // 실물계좌 요청 ID
+    private String fromBankName;             // 출금 은행명
+    private String fromBankAccountNumber;    // 출금 계좌번호
+    private String toBankName;               // 입금 은행명
+    private String toBankAccountNumber;      // 입금 계좌번호
+    private int moneyAmount;                 // 이체 금액
+    private int firmBankingStatus;           // 이체 상태
+    private UUID uuid;                       // 고유 식별자
+    
+    // Value Objects (DDD 패턴 적용)
+    - FirmBankRequestId
+    - FormBankName
+    - FormBankAccountNumber
+    - ToBankName
+    - ToBankAccountNumber
+    - MoneyAmount
+    - FirmBankingStatus
+}
 ```
 
 **외부 시스템 연동:**
 - `BankAccountAdapter`: 외부 은행 API 연동 어댑터 (현재 Mock 구현)
 - `RequestBankAccountInfoPort`: 은행 계좌 정보 요청 포트
+- `RequestExternalFirmBankingPort`: 외부 은행 실물 이체 요청 포트
 
 **API 엔드포인트:**
 - `POST /banking/account/register` - 은행 계좌 등록
 - `GET /banking/account/{membershipId}` - 회원별 은행 계좌 조회
+- `POST /banking/firmbanking/register` - 실물 계좌 이체 요청
 
 ## 🗄️ 데이터베이스 설정
 
@@ -229,25 +260,28 @@ docker-compose up -d
 ### 완료된 기능
 - ✅ **Membership Service**: 회원 등록/조회/수정 (완전 구현)
 - ✅ **Banking Service - 계좌 등록**: 외부 은행 연동 포함 (완전 구현)
+- ✅ **Banking Service - 계좌 조회**: 회원별 연결계좌 조회 (완전 구현)
+- ✅ **Banking Service - 실물 이체**: 계좌간 실물 이체 요청 (완전 구현)
 - ✅ **Docker 컨테이너화**: MySQL 연동 및 서비스 배포
 - ✅ **Swagger API 문서화**: 상세한 API 문서 및 예시값
 - ✅ **헥사고날 아키텍처**: Clean Architecture 적용
 
 ### 진행 중인 작업
-- ⚠️ **Banking Service - 계좌 조회**: API 구조는 완성, 서비스 로직 구현 필요
 - ⚠️ **에러 핸들링**: 현재 기본적인 null 반환, 체계적인 예외 처리 필요
+- ⚠️ **API 문서화**: 새로 추가된 실물 이체 API 문서화 필요
 
 ### 기술 부채
-- Banking Service의 `FindBankAccountService.findBankAccount()` 메서드 구현 필요
 - 공통 예외 처리 및 에러 응답 표준화
 - 통합 테스트 케이스 확장
+- 실물 이체 API Swagger 문서화
 
 ## 📈 향후 개발 계획
 
 ### 단기 계획 (1-2개월)
-- Banking Service 계좌 조회 기능 완성
+- 실물 이체 API Swagger 문서화 완성
 - 공통 예외 처리 모듈 개발
 - 통합 테스트 환경 구축
+- 이체 내역 조회 기능 추가
 
 ### 중기 계획 (3-6개월)
 - 결제 서비스 (Payment Service) 개발

@@ -1,5 +1,6 @@
 package com.depotpay.banking.adapter.out.external.bank;
 
+import com.depotpay.banking.application.port.out.RequestExternalFirmBankingPort;
 import com.depotpay.common.ExternalSystemAdapter;
 import lombok.RequiredArgsConstructor;
 import com.depotpay.banking.application.port.out.RequestBankAccountInfoPort;
@@ -9,7 +10,7 @@ import com.depotpay.banking.application.port.out.RequestBankAccountInfoPort;
  */
 @ExternalSystemAdapter
 @RequiredArgsConstructor
-public class BankAccountAdapter implements RequestBankAccountInfoPort {
+public class BankAccountAdapter implements RequestBankAccountInfoPort, RequestExternalFirmBankingPort {
 
     @Override
     public BankAccount getBankAccountInfo(GetBankAccountRequest request) {
@@ -20,5 +21,18 @@ public class BankAccountAdapter implements RequestBankAccountInfoPort {
         // 실제 은행 계좌 -> BankAccount 객체로 변환하여 반환
 
         return new BankAccount(request.getBankName(), request.getBankaccountNumber(), true);
+    }
+
+    @Override
+    public FirmBankingResult requestExternalFirmBanking(ExternalFirmBankingRequest request) {
+
+        // 실제로 외부 은행에서 http 을 통해서
+        // 펌뱅킹 요청을 하고
+
+        // 그 결과를
+        // 외부 은행의 실제 결과를 -> 페캠 페이의 FirmBankingResult 파싱
+        // 성공으로 가정
+
+        return new FirmBankingResult(0); // 0: 성공, 1: 실패
     }
 }
