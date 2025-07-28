@@ -2,7 +2,7 @@ plugins {
     id 'com.bmuschko.docker-spring-boot-application' version '9.4.0'
 }
 
-group = 'com.depotpay.banking'
+group = 'com.depotpay.money'
 version = '1.0.0'
 
 java {

@@ -13,11 +13,11 @@ import com.depotpay.banking.domain.RegisterBankAccount;
 @RequiredArgsConstructor
 public class RegisterBankAccountPersistenceAdapter implements RegisterBankAccountPort, FindBankAccountPort {
 
-    private final SpringDataBankAccountRepository springDataBankAccountRepository;
+    private final SpringDataRegisterBankAccountRepository springDataRegisterBankAccountRepository;
 
     @Override
     public RegisterBankAccountJpaEntity createRegisterBankAccount(RegisterBankAccount.MembershipId membershipId, RegisterBankAccount.BankName bankName, RegisterBankAccount.BankAccountNumber bankAccountNumber, RegisterBankAccount.LinkedStatusIsValid linkedStatusIsValid) {
-        return springDataBankAccountRepository.save(new RegisterBankAccountJpaEntity(
+        return springDataRegisterBankAccountRepository.save(new RegisterBankAccountJpaEntity(
                 membershipId.getMembershipId(),
                 bankName.getBankName(),
                 bankAccountNumber.getBankAccountNumber(),
@@ -27,7 +27,7 @@ public class RegisterBankAccountPersistenceAdapter implements RegisterBankAccoun
 
     @Override
     public RegisterBankAccountJpaEntity findRegisterBankAccount(RegisterBankAccount.MembershipId membershipId) {
-        return springDataBankAccountRepository.findByMembershipId(membershipId.getMembershipId())
+        return springDataRegisterBankAccountRepository.findByMembershipId(membershipId.getMembershipId())
                 .orElseThrow(() -> new IllegalArgumentException("등록된 계좌가 없습니다. 회원 ID: " + membershipId.getMembershipId()));
     }
 }

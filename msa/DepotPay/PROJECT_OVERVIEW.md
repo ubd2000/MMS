@@ -2,13 +2,14 @@
 
 ## 📋 프로젝트 개요
 
-DepotPay는 헥사고날 아키텍처(Hexagonal Architecture)와 마이크로서비스 패턴을 적용한 금융 서비스 플랫폼입니다. Spring Boot 3.5.3과 Java 17을 기반으로 구축되었으며, 회원 관리와 뱅킹 서비스를 제공합니다.
+DepotPay는 헥사고날 아키텍처(Hexagonal Architecture)와 마이크로서비스 패턴을 적용한 금융 서비스 플랫폼입니다. Spring Boot 3.5.3과 Java 17을 기반으로 구축되었으며, 회원 관리, 뱅킹 서비스, 그리고 머니 관리 서비스를 제공합니다.
 
 ## 🏗️ 아키텍처 개요
 
 ### 마이크로서비스 구조
 - **membership-service**: 회원 관리 서비스 (포트: 8080)
 - **banking-service**: 뱅킹 계좌 관리 서비스 (포트: 8081)
+- **money-service**: 머니 충전/감액 관리 서비스 (포트: 8082)
 - **common**: 공통 모듈 (어노테이션, 공통 인터페이스)
 
 ### 헥사고날 아키텍처 적용
@@ -152,6 +153,75 @@ public class FirmBankRequest {
 - `GET /banking/account/{membershipId}` - 회원별 은행 계좌 조회
 - `POST /banking/firmbanking/register` - 실물 계좌 이체 요청
 
+### 3. Money Service (머니 서비스)
+
+**기능:**
+- 머니 충전 요청 (Increase Money Request) - 🚧 구현 중
+- 머니 감액 요청 (Decrease Money Request) - 🚧 구현 예정
+- 회원별 머니 잔액 관리
+- 머니 변경 요청 이력 관리
+
+**비즈니스 로직 흐름:**
+
+*머니 충전 프로세스:*
+1. 회원 ID와 충전 금액을 포함한 요청 수신
+2. 충전 요청 정보 검증 (targetMembershipId, amount)
+3. MoneyChangingRequest 도메인 객체 생성
+4. 머니 변경 요청을 데이터베이스에 저장
+5. 충전 완료 결과 반환
+
+*머니 감액 프로세스:*
+- 현재 기본 구조만 구현되어 있음 (향후 개발 예정)
+
+**도메인 모델:**
+```java
+// 머니 변경 요청
+public class MoneyChangingRequest {
+    private String moneyChangingRequestId;       // 머니 변경 요청 ID
+    private String targetMembershipId;           // 대상 회원 ID
+    private int moneyChangingType;               // 변경 타입 (0: 증액, 1: 감액)
+    private int changingMoneyAmount;             // 변경 금액
+    private int changingMoneyStatus;             // 변경 상태 (0: 요청, 1: 성공, 2: 실패)
+    private String uuid;                         // 고유 식별자
+    private Date createdAt;                      // 생성일시
+    
+    // Value Objects (DDD 패턴 적용)
+    - MoneyChangingRequestId
+    - TargetMembershipId
+    - MoneyChangingType
+    - ChangingMoneyAmount
+    - MoneyChangingMoneyStatus
+    - Uuid
+    - CreatedAt
+}
+
+// 회원 머니
+public class MemberMoney {
+    private String memberMoneyId;                // 회원 머니 ID
+    private String memberShipId;                 // 회원 ID
+    private int balance;                         // 잔액
+    
+    // Value Objects (DDD 패턴 적용)
+    - MemberMoneyId
+    - MemberShipId
+    - MemberBalance
+}
+```
+
+**API 엔드포인트:**
+- `POST /money/increase` - 머니 충전 요청
+- `POST /money/decrease` - 머니 감액 요청 (구현 예정)
+
+**구현 상태:**
+- ✅ 기본 아키텍처 구조 설정 완료
+- ✅ 머니 충전 요청 컨트롤러 구현
+- ✅ MoneyChangingRequest 도메인 모델 구현
+- ✅ MemberMoney 도메인 모델 구현
+- ✅ JPA 엔티티 매핑 완료
+- ✅ Swagger 설정 완료
+- ⚠️ 머니 감액 요청 기능 미완성 (현재 null 반환)
+- ⚠️ 실제 비즈니스 로직 구현 필요 (잔액 업데이트 등)
+
 ## 🗄️ 데이터베이스 설정
 
 ### MySQL 설정
@@ -175,6 +245,7 @@ services:
   mysql:8.0          # 데이터베이스
   membership-service # 회원 서비스 (이미지: depotpay-membership-service:1.0.3)
   banking-service    # 뱅킹 서비스 (이미지: depotpay-banking-service:1.0.0)
+  money-service      # 머니 서비스 (이미지: depotpay-money-service:1.0.0)
 ```
 
 ### 네트워크
@@ -262,11 +333,14 @@ docker-compose up -d
 - ✅ **Banking Service - 계좌 등록**: 외부 은행 연동 포함 (완전 구현)
 - ✅ **Banking Service - 계좌 조회**: 회원별 연결계좌 조회 (완전 구현)
 - ✅ **Banking Service - 실물 이체**: 계좌간 실물 이체 요청 (완전 구현)
+- ✅ **Money Service - 기본 구조**: 헥사고날 아키텍처 및 도메인 모델 구현
 - ✅ **Docker 컨테이너화**: MySQL 연동 및 서비스 배포
 - ✅ **Swagger API 문서화**: 상세한 API 문서 및 예시값
 - ✅ **헥사고날 아키텍처**: Clean Architecture 적용
 
 ### 진행 중인 작업
+- 🚧 **Money Service - 머니 충전**: 기본 구조 완료, 비즈니스 로직 구현 중
+- ⚠️ **Money Service - 머니 감액**: 기본 틀만 구현, 완전한 기능 구현 필요
 - ⚠️ **에러 핸들링**: 현재 기본적인 null 반환, 체계적인 예외 처리 필요
 - ⚠️ **API 문서화**: 새로 추가된 실물 이체 API 문서화 필요
 
@@ -274,10 +348,14 @@ docker-compose up -d
 - 공통 예외 처리 및 에러 응답 표준화
 - 통합 테스트 케이스 확장
 - 실물 이체 API Swagger 문서화
+- Money Service 머니 감액 기능 완성
+- Money Service 실제 잔액 업데이트 로직 구현
 
 ## 📈 향후 개발 계획
 
 ### 단기 계획 (1-2개월)
+- Money Service 머니 충전/감액 기능 완전 구현
+- Money Service 회원 잔액 조회 기능 추가
 - 실물 이체 API Swagger 문서화 완성
 - 공통 예외 처리 모듈 개발
 - 통합 테스트 환경 구축

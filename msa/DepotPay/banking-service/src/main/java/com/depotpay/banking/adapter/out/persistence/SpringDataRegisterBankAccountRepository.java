@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * @author: DongMin Kim
  */
-public interface SpringDataBankAccountRepository extends JpaRepository<RegisterBankAccountJpaEntity, Long> {
+public interface SpringDataRegisterBankAccountRepository extends JpaRepository<RegisterBankAccountJpaEntity, Long> {
 
     // membershipId로 은행 계좌 조회
     Optional<RegisterBankAccountJpaEntity> findByMembershipId(String membershipId);
